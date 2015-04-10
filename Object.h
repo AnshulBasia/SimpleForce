@@ -3,6 +3,8 @@
 
 #include "Vector3D.h"
 
+using namespace std;
+
 class Object {
 	double mass; 
 	static int runningID;									// Assigned to a newly created object.
@@ -104,4 +106,5 @@ void Object::setPosition(Vector3D p) {
 int Object::numberOfObjs() {
 	return numberOfObjects;
 }
+
 #endif

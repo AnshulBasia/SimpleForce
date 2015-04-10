@@ -3,17 +3,21 @@
 
 #include "Object.h"
 
+using namespace std;
+
 class Queue {
-	static const double G;							// The universal gravitational constant.
+	static const double G;								// The universal gravitational constant.
 	Object *start, *end;
 public:
 	Queue() { start = nullptr; end = nullptr; } 
-	void Enqueue(Object *);							// Add an object to the queue.
-	void Dequeue(int); 								// Dequeue an object from the queue.
-	void AssignAccel();								// Compute the acceleration on each object in the queue.	
+	void Enqueue(Object *);								// Add an object to the queue.
+	void Dequeue(int); 									// Dequeue an object from the queue.
+	void AssignAccel();									// Compute the acceleration on each object in the queue.	
 	void AssignVeloc(double);
 	void AssignPosition(double);
-	void ChangePosition();							// Change the position of every object based on it's acceleration.
+	void ChangePosition();								// Change the position of every object based on it's acceleration.
+	friend ostream &operator<<(ostream &, Queue &);		// Producing text-based output. 
+	void Map(ostream&, Queue &);						// Producing a primitive graphic-based ouput (using char-arrays).
 };
 
 const double Queue::G = 6.67*pow(10, -11);
@@ -92,6 +96,24 @@ void Queue::AssignPosition(double deltaT) {
 		once = true;
 		ptr->setPosition(ptr->getVelocity()*deltaT + ptr->getAcceleration()*pow(deltaT, 2)*(0.5));	// Newton's second equation.
 	}
+}
+
+ostream& operator<<(ostream &out, Queue &Universe) {											
+	Object *ptr, *ptr1 = new Object();
+	bool once = false;
+	for (ptr = Universe.start; ptr != Universe.start || !once; ptr = ptr->getNext()) {
+		once = true;
+		if (ptr == nullptr) {
+			cout << "\n\t\tThere are no objects in this universe.\n\n";
+			break;
+		}
+		cout << "Object ID: " << ptr->getID() << endl;
+		cout << "Mass: " << fixed << setprecision(2) << ptr->getMass() << "kg" << endl;
+		cout << "Position: " << fixed << setprecision(2) << ptr->getPosition() << "m" << endl;
+		cout << "Velocity: " << fixed << setprecision(2) << ptr->getVelocity() << "m/s" << endl;
+		cout << "Acceleration: " << fixed << setprecision(2) << ptr->getAcceleration() << "m/s^2" << endl << endl;
+	}
+	return out;
 }
 
 #endif

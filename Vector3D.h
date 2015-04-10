@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ public:
 	Vector3D* operator=(Vector3D);
 	bool operator==(Vector3D);
 	friend istream &operator>>(istream &, Vector3D &);												// The input operator for a Vector3D object.
+	friend ostream& operator<<(ostream&, Vector3D &);												// To display the vector on screen.
 	double length();																				// Returns the magnitude/length.
 	Vector3D crossProduct(Vector3D);															    // The cross-product. (This X Arg)
 	double dotProduct(Vector3D);																	// The dot-product.			
@@ -92,6 +94,11 @@ Vector3D Vector3D::crossProduct(Vector3D multiplicand) {
 
 double Vector3D::dotProduct(Vector3D argument) {																
 	return (x*argument.getX() + y*argument.getY() + z*argument.getZ());
+}
+
+ostream& operator<<(ostream &out, Vector3D &v) {
+	out << fixed << setprecision(2) << v.x << "i + " << v.y << "j + " << v.z << "k";
+	return out;
 }
 
 #endif
